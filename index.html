@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Calculator</title>
     <style>
-        /* Disguise UI Styling */
+        /* Calculator Disguise UI */
         body { background: #000; color: white; font-family: -apple-system, sans-serif; margin: 0; overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
         #calc-ui { display: flex; flex-direction: column; height: 100%; }
         #display { flex: 1; display: flex; align-items: flex-end; justify-content: flex-end; padding: 20px; font-size: 4rem; color: #fff; }
         .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #333; }
-        button { background: #1c1c1c; border: none; color: white; padding: 25px 0; font-size: 1.5rem; active { background: #333; } }
+        button { background: #1c1c1c; border: none; color: white; padding: 25px 0; font-size: 1.5rem; outline: none; }
+        button:active { background: #333; }
         .op { color: #ff9f0a; }
 
         /* Fake Call Screen Overlay */
@@ -19,20 +20,21 @@
             position: fixed; 
             top: 0; left: 0; 
             width: 100vw; height: 100vh; 
+            /* Fixed filename from your drawable folder */
             background: url('phone_call.jpeg') no-repeat center center; 
             background-size: cover; 
             z-index: 999; 
         }
 
-        /* The Invisible 'Accept' Hitbox */
+        /* Invisible 'Accept' Hitbox */
         #accept-trigger {
             position: absolute;
-            bottom: 12%; /* Adjust based on your phone_call.jpeg layout */
+            bottom: 12%; 
             right: 15%;
             width: 120px;
             height: 120px;
             border-radius: 50%;
-            /* background: rgba(0, 255, 0, 0.2); // Uncomment this line to see the box for testing! */
+            cursor: pointer;
         }
     </style>
 </head>
@@ -63,18 +65,21 @@
             if (timerStarted) return;
             timerStarted = true;
 
-            // Optional: Slight vibration if the mobile browser supports it
+            // Simple vibration for feedback if supported
             if (navigator.vibrate) navigator.vibrate(50);
 
-            // Trigger call after 5 seconds
+            // 5 second delay before call starts
             setTimeout(() => {
                 document.getElementById('call-screen').style.display = 'block';
-                document.getElementById('ringtone').play().catch(e => console.log("Audio play blocked. Tap the screen first."));
+                // Play ringtone (requires initial user tap to work on mobile)
+                document.getElementById('ringtone').play().catch(e => {
+                    console.log("Audio play blocked. Make sure to tap a button first.");
+                });
             }, 5000);
         }
 
         function answerCall(event) {
-            event.stopPropagation(); // Stop from re-triggering the timer
+            event.stopPropagation(); // Prevents re-triggering the timer
             
             const ringtone = document.getElementById('ringtone');
             const voice = document.getElementById('voice');
