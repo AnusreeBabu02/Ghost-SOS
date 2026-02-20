@@ -12,7 +12,7 @@
         button { background: #1c1c1c; border: none; color: white; padding: 25px 0; font-size: 1.5rem; }
         .op { color: #ff9f0a; }
 
-        /* Fake Call Screen Overlay (Incoming) */
+        /* Incoming Call Screen */
         #call-screen { 
             display: none; 
             position: fixed; 
@@ -23,34 +23,36 @@
             z-index: 999; 
         }
 
-        /* Ongoing Call Screen Overlay (Active) */
+        /* Ongoing Call Screen */
         #ongoing-screen {
             display: none;
             position: fixed;
             top: 0; left: 0;
             width: 100vw; height: 100vh;
-            background: url('ongoing_call.jpeg') no-repeat center center;
+            /* Updated to use your new Motorola screenshot filename */
+            background: url('WhatsApp Image 2026-02-21 at 2.14.24 AM.jpeg') no-repeat center center;
             background-size: cover;
             z-index: 1000;
         }
 
-        /* DEBUG: Visible Hitboxes */
+        /* Hitboxes - Set borders to 'none' and backgrounds to 'transparent' for the real demo! */
         #accept-trigger {
             position: absolute;
             bottom: 12%; right: 15%;
-            width: 120px; height: 120px;
+            width: 100px; height: 100px;
             border-radius: 50%;
-            border: 5px solid red; /* Change to 'none' when done */
+            border: 2px solid red; 
             background: rgba(255, 0, 0, 0.2);
         }
 
         #hangup-trigger {
             position: absolute;
-            bottom: 12%; left: 50%;
+            bottom: 6%; /* Positioned for the red button in your new image */
+            left: 50%;
             transform: translateX(-50%);
-            width: 120px; height: 120px;
+            width: 110px; height: 110px;
             border-radius: 50%;
-            border: 5px solid blue; /* Change to 'none' when done */
+            border: 2px solid blue; 
             background: rgba(0, 0, 255, 0.2);
         }
     </style>
@@ -85,34 +87,24 @@
         function startGhostTimer() {
             if (timerStarted) return;
             timerStarted = true;
-            console.log("Stealth Triggered...");
-
             setTimeout(() => {
                 document.getElementById('call-screen').style.display = 'block';
-                document.getElementById('ringtone').play().catch(e => console.log("Unlock audio by tapping first."));
+                document.getElementById('ringtone').play();
             }, 5000);
         }
 
         function answerCall(event) {
             event.stopPropagation();
-            console.log("Call Answered.");
-            
             document.getElementById('ringtone').pause();
             document.getElementById('voice').play();
-
-            // Transition logic
             document.getElementById('call-screen').style.display = 'none';
             document.getElementById('ongoing-screen').style.display = 'block';
         }
 
         function endCall(event) {
             event.stopPropagation();
-            console.log("Call Ended.");
-            
             document.getElementById('voice').pause();
             document.getElementById('voice').currentTime = 0;
-            
-            // Back to Calculator
             document.getElementById('ongoing-screen').style.display = 'none';
             timerStarted = false;
         }
