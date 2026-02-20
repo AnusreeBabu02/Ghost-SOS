@@ -12,7 +12,7 @@
         button { background: #1c1c1c; border: none; color: white; padding: 25px 0; font-size: 1.5rem; }
         .op { color: #ff9f0a; }
 
-        /* Fake Call Screen Overlay */
+        /* Fake Call Screen Overlay (Incoming) */
         #call-screen { 
             display: none; 
             position: fixed; 
@@ -20,21 +20,38 @@
             width: 100vw; height: 100vh; 
             background: url('phone_call.jpeg') no-repeat center center; 
             background-size: cover; 
-            background-color: blue; /* Debug: If image fails, screen turns BLUE */
             z-index: 999; 
         }
 
-        /* VISIBLE 'Accept' Hitbox for Testing */
+        /* Ongoing Call Screen Overlay (Active) */
+        #ongoing-screen {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: url('ongoing_call.jpeg') no-repeat center center;
+            background-size: cover;
+            z-index: 1000;
+        }
+
+        /* DEBUG: Visible Hitboxes */
         #accept-trigger {
             position: absolute;
-            bottom: 12%; 
-            right: 15%;
-            width: 120px;
-            height: 120px;
+            bottom: 12%; right: 15%;
+            width: 120px; height: 120px;
             border-radius: 50%;
-            border: 5px solid red; /* DEBUG: Visible red circle */
-            background: rgba(255, 0, 0, 0.3);
-            cursor: pointer;
+            border: 5px solid red; /* Change to 'none' when done */
+            background: rgba(255, 0, 0, 0.2);
+        }
+
+        #hangup-trigger {
+            position: absolute;
+            bottom: 12%; left: 50%;
+            transform: translateX(-50%);
+            width: 120px; height: 120px;
+            border-radius: 50%;
+            border: 5px solid blue; /* Change to 'none' when done */
+            background: rgba(0, 0, 255, 0.2);
         }
     </style>
 </head>
@@ -55,6 +72,10 @@
         <div id="accept-trigger" onclick="answerCall(event)"></div>
     </div>
 
+    <div id="ongoing-screen">
+        <div id="hangup-trigger" onclick="endCall(event)"></div>
+    </div>
+
     <audio id="ringtone" src="ringtone.mp3" loop></audio>
     <audio id="voice" src="voice.mp3"></audio>
 
@@ -64,26 +85,36 @@
         function startGhostTimer() {
             if (timerStarted) return;
             timerStarted = true;
-            console.log("Timer started! Wait 5 seconds...");
+            console.log("Stealth Triggered...");
 
             setTimeout(() => {
-                console.log("5 seconds up! Attempting to show call-screen.");
-                const screen = document.getElementById('call-screen');
-                screen.style.display = 'block'; // This MUST run to show the screen
-                
-                const ring = document.getElementById('ringtone');
-                ring.play().catch(err => console.log("Audio play failed: ", err));
+                document.getElementById('call-screen').style.display = 'block';
+                document.getElementById('ringtone').play().catch(e => console.log("Unlock audio by tapping first."));
             }, 5000);
         }
 
         function answerCall(event) {
             event.stopPropagation();
-            console.log("Call Answered!");
+            console.log("Call Answered.");
+            
             document.getElementById('ringtone').pause();
             document.getElementById('voice').play();
-            // Hide the red circle after answering
-            document.getElementById('accept-trigger').style.borderColor = 'transparent';
-            document.getElementById('accept-trigger').style.background = 'transparent';
+
+            // Transition logic
+            document.getElementById('call-screen').style.display = 'none';
+            document.getElementById('ongoing-screen').style.display = 'block';
+        }
+
+        function endCall(event) {
+            event.stopPropagation();
+            console.log("Call Ended.");
+            
+            document.getElementById('voice').pause();
+            document.getElementById('voice').currentTime = 0;
+            
+            // Back to Calculator
+            document.getElementById('ongoing-screen').style.display = 'none';
+            timerStarted = false;
         }
     </script>
 </body>
