@@ -5,13 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Calculator</title>
     <style>
-        /* Calculator Disguise UI */
-        body { background: #000; color: white; font-family: -apple-system, sans-serif; margin: 0; overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
+        body { background: #000; color: white; font-family: sans-serif; margin: 0; overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
         #calc-ui { display: flex; flex-direction: column; height: 100%; }
-        #display { flex: 1; display: flex; align-items: flex-end; justify-content: flex-end; padding: 20px; font-size: 4rem; color: #fff; }
+        #display { flex: 1; display: flex; align-items: flex-end; justify-content: flex-end; padding: 20px; font-size: 4rem; }
         .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #333; }
-        button { background: #1c1c1c; border: none; color: white; padding: 25px 0; font-size: 1.5rem; outline: none; }
-        button:active { background: #333; }
+        button { background: #1c1c1c; border: none; color: white; padding: 25px 0; font-size: 1.5rem; }
         .op { color: #ff9f0a; }
 
         /* Fake Call Screen Overlay */
@@ -20,13 +18,13 @@
             position: fixed; 
             top: 0; left: 0; 
             width: 100vw; height: 100vh; 
-            /* Fixed filename from your drawable folder */
             background: url('phone_call.jpeg') no-repeat center center; 
             background-size: cover; 
+            background-color: blue; /* Debug: If image fails, screen turns BLUE */
             z-index: 999; 
         }
 
-        /* Invisible 'Accept' Hitbox */
+        /* VISIBLE 'Accept' Hitbox for Testing */
         #accept-trigger {
             position: absolute;
             bottom: 12%; 
@@ -34,6 +32,8 @@
             width: 120px;
             height: 120px;
             border-radius: 50%;
+            border: 5px solid red; /* DEBUG: Visible red circle */
+            background: rgba(255, 0, 0, 0.3);
             cursor: pointer;
         }
     </style>
@@ -64,29 +64,26 @@
         function startGhostTimer() {
             if (timerStarted) return;
             timerStarted = true;
+            console.log("Timer started! Wait 5 seconds...");
 
-            // Simple vibration for feedback if supported
-            if (navigator.vibrate) navigator.vibrate(50);
-
-            // 5 second delay before call starts
             setTimeout(() => {
-                document.getElementById('call-screen').style.display = 'block';
-                // Play ringtone (requires initial user tap to work on mobile)
-                document.getElementById('ringtone').play().catch(e => {
-                    console.log("Audio play blocked. Make sure to tap a button first.");
-                });
+                console.log("5 seconds up! Attempting to show call-screen.");
+                const screen = document.getElementById('call-screen');
+                screen.style.display = 'block'; // This MUST run to show the screen
+                
+                const ring = document.getElementById('ringtone');
+                ring.play().catch(err => console.log("Audio play failed: ", err));
             }, 5000);
         }
 
         function answerCall(event) {
-            event.stopPropagation(); // Prevents re-triggering the timer
-            
-            const ringtone = document.getElementById('ringtone');
-            const voice = document.getElementById('voice');
-
-            ringtone.pause();
-            ringtone.currentTime = 0;
-            voice.play();
+            event.stopPropagation();
+            console.log("Call Answered!");
+            document.getElementById('ringtone').pause();
+            document.getElementById('voice').play();
+            // Hide the red circle after answering
+            document.getElementById('accept-trigger').style.borderColor = 'transparent';
+            document.getElementById('accept-trigger').style.background = 'transparent';
         }
     </script>
 </body>
