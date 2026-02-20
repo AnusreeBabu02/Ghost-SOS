@@ -1,49 +1,88 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="manifest" href="manifest.json">
+    <title>Calculator</title>
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: sans-serif; }
-        #disguise { background: #1a1a1a; color: white; height: 100%; display: flex; align-items: center; justify-content: center; text-align: center; }
+        /* Disguise UI Styling */
+        body { background: #000; color: white; font-family: -apple-system, sans-serif; margin: 0; overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
+        #calc-ui { display: flex; flex-direction: column; height: 100%; }
+        #display { flex: 1; display: flex; align-items: flex-end; justify-content: flex-end; padding: 20px; font-size: 4rem; color: #fff; }
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #333; }
+        button { background: #1c1c1c; border: none; color: white; padding: 25px 0; font-size: 1.5rem; active { background: #333; } }
+        .op { color: #ff9f0a; }
+
+        /* Fake Call Screen Overlay */
         #call-screen { 
             display: none; 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: url('call_bg.png') no-repeat center center; 
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100vw; height: 100vh; 
+            background: url('phone_call.jpeg') no-repeat center center; 
             background-size: cover; 
-            z-index: 100;
+            z-index: 999; 
         }
-        .invisible-btn { position: absolute; width: 100px; height: 100px; opacity: 0; }
-        #accept { bottom: 15%; right: 15%; }
+
+        /* The Invisible 'Accept' Hitbox */
+        #accept-trigger {
+            position: absolute;
+            bottom: 12%; /* Adjust based on your phone_call.jpeg layout */
+            right: 15%;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            /* background: rgba(0, 255, 0, 0.2); // Uncomment this line to see the box for testing! */
+        }
     </style>
 </head>
-<body>
+<body onclick="startGhostTimer()">
 
-<div id="disguise" onclick="startGhostTimer()">
-    <h1>Vintage Poetry</h1>
-    <p>Tap anywhere to read...</p>
-</div>
+    <div id="calc-ui">
+        <div id="display">0</div>
+        <div class="grid">
+            <button>AC</button><button>+/-</button><button>%</button><button class="op">÷</button>
+            <button>7</button><button>8</button><button>9</button><button class="op">×</button>
+            <button>4</button><button>5</button><button>6</button><button class="op">-</button>
+            <button>1</button><button>2</button><button>3</button><button class="op">+</button>
+            <button style="grid-column: span 2;">0</button><button>.</button><button class="op">=</button>
+        </div>
+    </div>
 
-<div id="call-screen">
-    <div id="accept" class="invisible-btn" onclick="answerCall()"></div>
-</div>
+    <div id="call-screen">
+        <div id="accept-trigger" onclick="answerCall(event)"></div>
+    </div>
 
-<audio id="ringtone" src="ringtone.mp3" loop></audio>
-<audio id="voice" src="scripted_voice.mp3"></audio>
+    <audio id="ringtone" src="ringtone.mp3" loop></audio>
+    <audio id="voice" src="voice.mp3"></audio>
 
-<script>
-    function startGhostTimer() {
-        alert("Ghost SOS activated. Stay calm.");
-        setTimeout(() => {
-            document.getElementById('call-screen').style.display = 'block';
-            document.getElementById('ringtone').play();
-        }, 10000); // 10 second delay
-    }
+    <script>
+        let timerStarted = false;
 
-    function answerCall() {
-        document.getElementById('ringtone').pause();
-        document.getElementById('voice').play();
-    }
-</script>
+        function startGhostTimer() {
+            if (timerStarted) return;
+            timerStarted = true;
+
+            // Optional: Slight vibration if the mobile browser supports it
+            if (navigator.vibrate) navigator.vibrate(50);
+
+            // Trigger call after 5 seconds
+            setTimeout(() => {
+                document.getElementById('call-screen').style.display = 'block';
+                document.getElementById('ringtone').play().catch(e => console.log("Audio play blocked. Tap the screen first."));
+            }, 5000);
+        }
+
+        function answerCall(event) {
+            event.stopPropagation(); // Stop from re-triggering the timer
+            
+            const ringtone = document.getElementById('ringtone');
+            const voice = document.getElementById('voice');
+
+            ringtone.pause();
+            ringtone.currentTime = 0;
+            voice.play();
+        }
+    </script>
 </body>
 </html>
