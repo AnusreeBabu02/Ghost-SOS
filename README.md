@@ -6,6 +6,9 @@
 **[Check out the Live App here!](https://anusreebabu02.github.io/Ghost-SOS/)** 
 Works only in moblie
 
+## Demo Video
+[Watch the Ghost SOS Demo here](https://drive.google.com/file/d/1nkNnRCEevQF-ktoR-HMuaJrhmEBrlrXU/view?usp=drive_link)
+
 ---
 
 ## 🛠️ Tech Stack
