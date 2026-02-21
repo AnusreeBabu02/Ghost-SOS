@@ -26,6 +26,8 @@ Works only in moblie
 
 ## 📱 App Flow & Architecture
 
+![WhatsApp Image 2026-02-21 at 9 31 21 AM](https://github.com/user-attachments/assets/b841887e-1531-4792-abde-0ac8ab45b073)
+
 
 1.  **Home:** User opens the Calculator.
 2.  **Trigger:** User taps a button; a 5-second timer begins.
