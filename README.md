@@ -1,5 +1,8 @@
 # Ghost SOS - Stealth Safety App
 
+In uncomfortable, unsafe, or high-pressure social situations, many individuals — particularly women — need a subtle and non-confrontational exit strategy.
+Most safety apps are obvious and can escalate risk if noticed. There is a need for a stealth-first solution that works instantly without raising suspicion.
+
 **Ghost SOS** is a disguised safety tool designed for individuals in high-pressure or uncomfortable situations. It masquerades as a fully functional calculator, allowing users to discreetly trigger a realistic "Ghost Call" to provide a safe exit strategy.
 
 ## 🚀 Live Demo
