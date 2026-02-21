@@ -43,6 +43,23 @@ Works only in moblie
 
 ---
 
+## ⚙️ Setup & Installation
+
+Since Ghost SOS is a lightweight web-based application, there is no heavy installation required. You can run it directly in any modern mobile or desktop browser.
+
+### Option 1: Live Access (Recommended)
+Simply visit the live URL to use the app immediately:
+**[https://anusreebabu02.github.io/Ghost-SOS/](https://anusreebabu02.github.io/Ghost-SOS/)**
+
+### Option 2: Local Development
+If you wish to run the project locally for development or testing:
+
+1. **Clone the Repository:**
+   ```bash
+   git clone [https://github.com/anusreebabu02/Ghost-SOS.git](https://github.com/anusreebabu02/Ghost-SOS.git)
+
+---
+
 ## 🤖 AI Tools Used
 * **Gemini (Google AI):** Used for debugging deployment errors, refactoring Android logic into Web App format, and improving documentation and feature flow. 
 * **ChatGPT (OpenAI):** Used for project structuring, README documentation drafting, and feature refinement/UX improvements. 
